@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eldercare Change Project</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega@5"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega-lite@4.17.0"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega-embed@6"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <div class="container" style="margin: auto; display: flex; flex-direction: column; justify-content: center; text-align: center;">
+        {% if name %}
+        <h1>Hello, this is {{ name }}, and this is Capstone {{ version }}</h1>
+        {% else %}
+        <h1>Capstone Project</h1>
+        {% endif %}
+
+        <h2 style="font-style: italic;">Mila Kolpashnikova</h2>
+        
+        <div id="mapChartContainer" class="box box4" style="width: 100%; height: 100%;">
+            <div id="vmap" style="width: 100%; height: 90%;"></div>
+            <div id='wrapper' class="wrapper" style="width: 100%; height: 10%;">
+                <form action='/' method='POST'>
+                    {% csrf_token %}
+                    <input id='Original' class="button btn-secondary button-1 active" type="submit" value="Original" name="bu" />
+                    <input id='50%' class="button btn-success button-2" type="submit" value="50% UP" name="bu" />
+                    <input id='80%' class="button btn-warning button-2" type="submit" value="80% UP" name="bu" />
+                </form>
+            </div>
+        </div>
+
+        <div id="vis" style="padding: 50px 0;"></div>
+        {% if AC %}
+            <div class="datum">The decrease of working time in this scenario is {{ W.percent }}%. The number of people-hours lost everyday: {{ W.total_time }}mln.</div>
+            <div class="datum">The adultcare time will increase by {{ AC.percent }}%. Total DAILY people-hours lost: {{ AC.total_time }}mln.</div>
+            <div class="datum">The childcare will decrease by {{ CC.percent }}%. Total daily people-hours saved: {{ CC.total_time }}mln.</div>
+        {% endif %}
+
+    </div>
+
+    <script>
+        var spec = {{ chart1 | safe }};
+        vegaEmbed("#vis", spec);
+    </script>
+
+</body>
+</html>
+

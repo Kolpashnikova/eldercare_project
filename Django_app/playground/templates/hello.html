@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega@5"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega-lite@4.17.0"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega-embed@6"></script>
+</head>
+<body>
+    {% if name %}
+    <h1>Hello, this is {{ name }}, and this is Capstone {{ age }}</h1>
+    {% else %}
+    <h1>Capstone Project</h1>
+    {% endif %}
+    
+    <div id="mapChartContainer" class="box box4" style="width: 100%; height: 100%;">
+        <div id="vmap" style="width: 100%; height: 90%;"></div>
+        <div id='wrapper' class="wrapper" style="width: 100%; height: 10%;">
+            <form action='/hello/' method='POST'>
+                {% csrf_token %}
+                <input id='Original' class="button button-1 active" type="submit" value="Original" name="bu" />
+                <input id='50%' class="button button-2" type="submit" value="50% UP" name="bu" />
+                <input id='80%' class="button button-2" type="submit" value="80% UP" name="bu" />
+            </form>
+        </div>
+    </div>
+
+    <div id="vis"></div>
+    {% if AC %}
+        <div class="datum">The decrease of working time in this scenario is {{ W.percent }}%. The number of people-hours lost everyday: {{ W.total_time }}</div>
+        <div class="datum">The adultcare time will increase by {{ AC.percent }}%. Total DAILY people-hours lost: {{ AC.total_time }}</div>
+        <div class="datum">The childcare will decrease by {{ CC.percent }}%. Total daily people-hours saved: {{ CC.total_time }}</div>
+    {% endif %}
+
+    <script>
+        var spec = {{ chart1 | safe }};
+        vegaEmbed("#vis", spec);
+    </script>
+
+</body>
+</html>
+
