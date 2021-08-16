@@ -47,4 +47,6 @@ Data is from the Bureau of Labor Statistics, which can be downloaded (from multi
 
 ## Temporary Hosting
 
-[kamilakolpashnikova.com](http://194.182.171.196/)
+[kamilakolpashnikova.com](http://kamilakolpashnikova.com/)
+
+Runs on Chrome
