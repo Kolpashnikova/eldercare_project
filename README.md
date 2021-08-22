@@ -13,10 +13,10 @@ In this project, I estimate how many person-hours the eldercare will cost us, wh
 Data is from the Bureau of Labor Statistics, which can be downloaded (from multiple files) from this link: ['ATUS Data Link'](https://www.bls.gov/tus/data.htm).
 
 ATUS data is separated into multiple datasets, which were combined in this project. Particularly, the project uses:
-- [activity file]('https://www.bls.gov/tus/special.requests/atusact-0320.zip')
-- [eldercare file]('https://www.bls.gov/tus/special.requests/atusrostec-1120.zip'). This helps to identify eldecare givers.
-- [respondent file]('https://www.bls.gov/tus/special.requests/atusresp-0320.zip'). This file contains survey weights that were used to weigh the diaries.
-- [summary file]('https://www.bls.gov/tus/special.requests/atussum-0320.zip'). This file contains demographic information such as age and diary day information such as day of the week, which were used to subset the data. The analyses are done for the subsample of those who are of 20-65 years of age and for weekdays.
+- [activity file](https://www.bls.gov/tus/special.requests/atusact-0320.zip)
+- [eldercare file](https://www.bls.gov/tus/special.requests/atusrostec-1120.zip). This helps to identify eldecare givers.
+- [respondent file](https://www.bls.gov/tus/special.requests/atusresp-0320.zip). This file contains survey weights that were used to weigh the diaries.
+- [summary file](https://www.bls.gov/tus/special.requests/atussum-0320.zip). This file contains demographic information such as age and diary day information such as day of the week, which were used to subset the data. The analyses are done for the subsample of those who are of 20-65 years of age and for weekdays.
 
 ## Repo Files and Folders
 
