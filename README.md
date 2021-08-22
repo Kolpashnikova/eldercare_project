@@ -24,6 +24,23 @@ ATUS data is separated into multiple datasets, which were combined in this proje
 - WranglingATUS.html -- same file in the .html format
 - Django_app -- all files for the Django app used for the project
 
+## Procedures performed
+
+- the filter for caregivers is created by merging diary and eldecare givers files
+- weights are created merging the diary and respondents files
+- ajusted weights are calculated based on the total number of observations
+- demographic data is extracted from the summary files and used to subset the data for working age population (>=20 and <65 years of age)
+- day of the week data is extracted and merged with the diary data to subset only weekdays (b/c weekends are usually specific and vary a lot compared to weekdays)
+- transformed start/stop diary data into sequences of minutes (this makes possible the next step for calculating obsevations at each minute)
+- original activity codes are combined into larger categories. For this project into Work/Education, Travel, Housework, Eldercare, Childcare, and Leisure (including sleep)
+- timeStamp data is transformed into minute-hour timestamps. Linux time is used.
+- observations are counted for each activity of interest for each time/minute of the diary day. 
+- these aggregated numbers are used for stacked area plots that report the diary information
+- altair is used to create visualizations
+- Django app developed for the website 
+- the app is hosted on a server     
+- domain connected to the website address
+
 ## Packages Used:
 
 - altair==4.1.0
