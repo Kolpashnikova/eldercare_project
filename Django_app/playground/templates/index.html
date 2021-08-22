@@ -13,15 +13,30 @@
 
 </head>
 <body>
-    <div class="container" style="margin: auto; display: flex; flex-direction: column; justify-content: center; text-align: center;">
+    <div class="container" style="margin: auto; display: flex; flex-direction: column; justify-content: center; text-align: center; width: 800px;">
         {% if name %}
         <h1>Hello, this is {{ name }}, and this is Capstone {{ version }}</h1>
         {% else %}
         <h1>Capstone Project</h1>
         {% endif %}
 
-        <h2 style="font-style: italic;">Mila Kolpashnikova</h2>
-        
+        <h2 style="font-style: italic; padding-bottom: 20px;">Mila Kolpashnikova</h2>
+
+        <div style="text-align: left; padding-left: 30px;">
+            <p>Aging society and the burden of eldercare are one of the biggest challenges of the modern society.</p>
+
+            <p>In this project, I estimate <b>how many person-hours the eldercare burden will cost the US economy</b>, when the number of caregivers rises from today's level to 50% of the population (estimated to reach in 2100), and if the level of caregivers reaches 80% (hypothetical only).</p>
+            
+            <p>In the first figure, the main activities throught the day for the total working-age population are represented. </p>
+
+            <p>The details for procedures and data for this project can be found on <a href="https://github.com/Kolpashnikova/eldercare_project">GitHub</a> </p>
+
+            <p>The buttons below change the graphs to 1) Original (the current population estimates). 2) if the percentage of caregivers increases to 50% of the working-age population. 3) projections of time-use if the proportion of caregivers increases to 80% of the working-age population.</p>
+
+            <p>For the detailed interpretation of tempograms (diary activity distributions) and their calculations, see <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0252843">Kolpashnikova et al. (2021).</a> </p>
+
+        </div>
+
         <div id="mapChartContainer" class="box box4" style="width: 100%; height: 100%;">
             <div id="vmap" style="width: 100%; height: 90%;"></div>
             <div id='wrapper' class="wrapper" style="width: 100%; height: 10%;">
@@ -34,11 +49,14 @@
             </div>
         </div>
 
-        <div id="vis" style="padding: 50px 0;"></div>
+        <div id="vis" style="padding: 50px 0 0 0;"></div>
+        <div style="padding-bottom: 20px; text-align: left; padding-left: 30px;">The distribution of activities throughout the day indicate that although the outsourcing of childcare make it possible for Americans to perform childcare at hours outside of paid work, the same is not true for eldercare. Most eldercare is performed during working hours. </div>
         {% if AC %}
-            <div class="datum">The decrease of working time in this scenario is {{ W.percent }}%. The number of people-hours lost everyday: {{ W.total_time }}mln.</div>
-            <div class="datum">The adultcare time will increase by {{ AC.percent }}%. Total DAILY people-hours lost: {{ AC.total_time }}mln.</div>
-            <div class="datum">The childcare will decrease by {{ CC.percent }}%. Total daily people-hours saved: {{ CC.total_time }}mln.</div>
+            <div style="margin-bottom: 100px; text-align: left; padding-left: 30px;">Given the projections that the population of the US will reach about 434 million people. So, that means that daily, the US economy would have 10.416 billion total person-hours. The costs of caregiving on the economy projected out of those person-hours will be: 
+                <div class="datum"><li>The decrease of working time in this scenario is {{ W.percent }}%. The corresponding number of person-hours lost everyday: <b>{{ W.total_time }} million</b>.</li></div>
+                <div class="datum"><li>The adultcare time will increase by {{ AC.percent }}%. Total DAILY person-hours lost: <b>{{ AC.total_time }} million</b>.</li></div>
+                <div class="datum"><li>The childcare will decrease by {{ CC.percent }}%. Total daily person-hours saved: {{ CC.total_time }} million.</li></div>
+            </div>
         {% endif %}
 
     </div>
