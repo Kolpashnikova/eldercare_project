@@ -70,6 +70,6 @@ ATUS data is separated into multiple datasets, which were combined in this proje
 
 ## Temporary Hosting
 
-[kamilakolpashnikova.com](http://kamilakolpashnikova.com/)
+The hosting was discontinued.
 
 Runs on Chrome
