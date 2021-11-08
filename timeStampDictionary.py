@@ -1,4 +1,10 @@
-def numberToOneFourFourZeroScale(number):
+# contains:
+# number_to_one_four_four_zero_scale()
+# timestamp_to_number()
+# clocktime_to_number()
+# number_to_clocktime()
+
+def number_to_one_four_four_zero_scale(number):
     
     time_var = {
         0:  240,
@@ -101,7 +107,7 @@ def numberToOneFourFourZeroScale(number):
 
     return time_var[number]
 
-def timestampToNumber(timestamp):
+def timestamp_to_number(timestamp):
     # because I want to deal with integers from 0 to 1440
     # I'm sending everything back in time to 01-01-1970
     time_var = {14400:  1,
@@ -1548,7 +1554,7 @@ def timestampToNumber(timestamp):
 
     return time_var[timestamp]
 
-def clocktimeToNumber(clocktime):
+def clocktime_to_number(clocktime):
     # generate time variable, where minutes are date types
     # because I want to deal with integers from 0 to 1440
     # I'm sending everything back in time to 01-01-1970
@@ -2997,7 +3003,7 @@ def clocktimeToNumber(clocktime):
 
     return time_var[clocktime]
 
-def numberToClocktime(number):
+def number_to_clocktime(number):
     # generate time variable, where minutes are date types
     # because I want to deal with integers from 0 to 1440
     # I'm sending everything back in time to 01-01-1970
