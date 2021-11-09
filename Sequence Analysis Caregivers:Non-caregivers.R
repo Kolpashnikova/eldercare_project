@@ -21,15 +21,15 @@ pacman::p_load(TraMineR, TraMineRextras, cluster, RColorBrewer, devtools, haven,
 ## load dta dataset
 ## remember that in r, it's forward slashes
 ## unlike read.dta read_dta reads all versions of stata
-data<-read_dta("sample_data.dta")
+data<-read_csv("diary.csv")
 
 ## create id if id is not present in the dataset
-data$id <- as.numeric(seq.int(nrow(data)))
+data$id <- as.numeric(data$X1)
 
 ## specify the names for the activity variables
 activities<-c()
-for(i in 1:96) {
-  activities<-c(activities, paste("act_h", i, sep = ""))
+for(i in 0:1439) {
+  activities<-c(activities, paste("var", i, sep = ""))
 }
 
 activities
@@ -38,32 +38,10 @@ activities
 
 #### Sequence Analysis #####
 
-# I create an object with intervals' labels. Sequences start at 00:00 AM:
+# I create an object with intervals' labels. Sequences start at 04:00 AM:
 # depending on your own sequence intervals these labels need to be adjusted
-t_intervals_labels <-  c("00:00", "00:15","00:30","00:45",
-                         "01:00", "01:15","01:30","01:45",
-                         "02:00", "02:15","02:30","02:45",
-                         "03:00", "03:15","03:30","03:45",
-                         "04:00", "04:15","04:30","04:45",
-                         "05:00", "05:15","05:30","05:45",
-                         "06:00", "06:15","06:30","06:45",
-                         "07:00", "07:15","07:30","07:45",
-                         "08:00", "08:15","08:30","08:45",
-                         "09:00", "09:15","09:30","09:45",
-                         "10:00", "10:15","10:30","10:45",
-                         "11:00", "11:15","11:30","11:45",
-                         "12:00", "12:15","12:30","12:45",
-                         "13:00", "13:15","13:30","13:45",
-                         "14:00", "14:15","14:30","14:45",
-                         "15:00", "15:15","15:30","15:45",
-                         "16:00", "16:15","16:30","16:45",
-                         "17:00", "17:15","17:30","17:45",
-                         "18:00", "18:15","18:30","18:45",
-                         "19:00", "19:15","19:30","19:45",
-                         "20:00", "20:15","20:30","20:45",
-                         "21:00", "21:15","21:30","21:45",
-                         "22:00", "22:15","22:30","22:45",
-                         "23:00", "23:15","23:30","23:45")
+t_intervals_labels <-  format( seq.POSIXt(as.POSIXct("2021-11-08 04:00:00 GMT"), as.POSIXct("2021-11-09 03:59:00 GMT"), by = "1 min"),
+                               "%H:%M", tz="GMT")
 
 #### colour palette ####
 
@@ -76,15 +54,12 @@ getPalette = colorRampPalette(brewer.pal(9, "Set3"))
 
 ## to check the created pallette: 
 ## define labels first and count:
-labels = c("sleep", "selfcare", 
-           "eatdrink", "commute",
-           "paidwork", "educatn", "housework",
-           "shopserv", "TVradio", "leisure", 
-           "sportex",
-           "volorgwk",
-           "other activity")
+labels = c("sleep", "housework", 
+           "childcare", "adult care",
+           "paidwork", "shopping", "leisure", 
+           "travel")
 colourCount = length(labels)
-getPalette = colorRampPalette(brewer.pal(9, "Set3"))
+getPalette = colorRampPalette(brewer.pal(8, "Set3"))
 
 ## let's see how our colours look like
 axisLimit <- sqrt(colourCount)+1
@@ -116,16 +91,10 @@ MyData <- as_tibble(data)
 gentime_seq <- seqdef(MyData,
                         var = activities,
                         cnames = t_intervals_labels,
-                        alphabet = c("1", "2", "3", "4", "5",
-                                     "6", "7", "8","9", "10",
-                                     "11", "12", "13"), 
-                        labels = c("sleep", "selfcare", 
-                                   "eatdrink", "commute",
-                                   "paidwork", "educatn", "housework",
-                                   "shopserv", "TVradio", "leisure", 
-                                   "sportex",
-                                   "volorgwk",
-                                   "other activity"),
+                        alphabet = c("1", "3", "4", "5",
+                                     "6", "7", "10",
+                                     "11"), 
+                        labels = labels,
                         cpal = getPalette(colourCount),
                         xtstep = 18, ##step between displayed tick-marks and labels on the time x-axis
                         id = MyData$id)
@@ -156,7 +125,7 @@ seqIplot(gentime_seq, border = NA, with.legend = "right", legend.prop=0.4, idxs 
 seqtab(gentime_seq, idxs = 1:4)
 
 ## Plot of the 10 most frequent sequences
-seqplot(gentime_seq, type="f", with.legend = "right", legend.prop=0.4)
+#seqplot(gentime_seq, type="f", with.legend = "right", legend.prop=0.4)
 
 ##also can plot frequencies using seqfplot
 seqfplot(gentime_seq, border = NA, with.legend = "right", legend.prop=0.4)
@@ -186,53 +155,35 @@ ggplot(heatTrate, aes(Var2, Var1)) +
 #### changing granularity (number of steps in a sequence) ####
 ## changing the number of steps
 ## to the first method = "first", to the last = "last", or most frequent = "mostfreq"
-## 4 means every hour instead of 15 min
-gentime4_seq <- seqgranularity(gentime_seq,
-                                  tspan=4, method="mostfreq")
+## 15 means every 15 min
+gentime15_seq <- seqgranularity(gentime_seq,
+                                  tspan=15, method="mostfreq")
 
-seqdplot(gentime4_seq, border = NA, with.legend = "right", legend.prop=0.4)
+seqdplot(gentime15_seq, border = NA, with.legend = "right", legend.prop=0.4)
 
 #### Modal states sequence ####
 
-seqplot(gentime_seq, type="ms", with.legend = "right", legend.prop=0.4)
+#seqplot(gentime_seq, type="ms", with.legend = "right", legend.prop=0.4)
 ## same as
-seqmsplot(gentime4_seq, with.legend = "right", legend.prop=0.4, main="Modal Sequences")
+seqmsplot(gentime15_seq, with.legend = "right", legend.prop=0.4, main="Modal Sequences")
 
 #transversal enthropy of state distributions
 #the number of valid states and the Shannon entropy of the transversal state
 #distribution.
-seqHtplot(gentime_seq, with.legend = "right", legend.prop=0.4)
+seqHtplot(gentime15_seq, with.legend = "right", legend.prop=0.4)
 
 
 
 #### calculating dissimilarities #####
 
-## let's subset our sequences b/c it's too big and will take a long time otherwise
-data4om<-seqdef(MyData[1:2000,],
-                var = activities,
-                cnames = t_intervals_labels,
-                alphabet = c("1", "2", "3", "4", "5",
-                             "6", "7", "8","9", "10",
-                             "11", "12", "13"), ## notice that I don't have 8 ) you might have it check the data
-                labels = c("sleep", "selfcare", 
-                           "eatdrink", "commute",
-                           "paidwork", "educatn", "housework",
-                           "shopserv", "TVradio", "leisure", 
-                           "sportex",
-                           "volorgwk",
-                           "other activity"),
-                cpal = getPalette(colourCount),
-                xtstep = 18, ##step between displayed tick-marks and labels on the time x-axis
-                id = MyData[1:2000,]$id)
-
 # seqdist() = for pairwise dissimilarities
 # seqsubm() = to compute own substitution matrix
 #"TRATE", the costs are determined from the estimated transition rates
-scost <- seqsubm(data4om, method = "TRATE")
+scost <- seqsubm(gentime15_seq, method = "TRATE")
 round(scost, 3)
 ## calculated in this way, all are close to 2 anyway (for this dataset) 2 is default
 ## or we can use the usual default one of constant 2:
-ccost <- seqsubm(data4om, method="CONSTANT", cval=2)
+ccost <- seqsubm(gentime15_seq, method="CONSTANT", cval=2)
 round(ccost, 3)
 
 ##optimal matching include both substitutions and indels
@@ -245,7 +196,7 @@ round(ccost, 3)
 ## remember that With a
 ##constant substitution cost of 2 and an indel cost equal to 1, OM is just LCS (longest common subsequence)
 ## default is that substitution cost is twice the indel cost, and default indel cost is 1
-om_gentime <- seqdist(data4om, method = "OM", indel = 1, sm = scost)
+om_gentime <- seqdist(gentime15_seq, method = "OM", indel = 1, sm = scost)
 ## this results in a dissimilarity matrix which you can look at using:
 round(om_gentime[1:10, 1:10], 1)
 
@@ -269,7 +220,7 @@ plot(hcd, type = "rectangle", ylab = "Height")
 #### testing cluster solution ####
 
 #inspect the splitting steps
-ward.tree <- as.seqtree(clusterward, seqdata = data4om, 
+ward.tree <- as.seqtree(clusterward, seqdata = gentime15_seq, 
                             diss = om_gentime, 
                             ncluster = 25)
 seqtreedisplay(ward.tree, type = "d", border = NA, show.depth = TRUE) 
@@ -324,17 +275,17 @@ plot(wardtest, stat = c("ASW", "HC", "PBC"), norm = "zscore", lwd = 4)
 #### cluster solution ####
 
 #cut tree
-MyData<-MyData[1:2000,]
-c10 <- cutree(clusterward, k = 10)
+
+c10 <- cutree(clusterward, k = 8)
 MyData<-cbind(MyData, c10)
 
 #plot cluster solution
 png("test.png", 1200, 800)
-seqdplot(data4om, group = c10, border = NA)
+seqdplot(gentime15_seq, group = c10, border = NA)
 dev.off()
 
 # subset data by cluster
-cl1<-(data4om[MyData$c10 ==  "1",])
+cl1<-(gentime15_seq[MyData$c10 ==  "1",])
 
 # plot the selected cluster 
 par(mfrow=c(1,1))
@@ -346,22 +297,4 @@ seqdplot(cl1, main = "",
          ylab = "",
          border = NA)
 
-#### multinomial regression #####
-
-# Format categorical variables
-MyData$c10 <- factor(MyData$c10)
-
-# Set the reference group for c1 to be 1
-MyData$c10 <- relevel(MyData$c10, ref=1)
-
-# Run the model
-model <- multinom(c10~URBAN+SEX+CARER+factor(INCOME), data=MyData, na.action=na.omit)
-
-summary(model)
-
-##Multinomial logit model: relative risk ratios
-# Relative risk ratios allow an easier interpretation of the logit coefficients. 
-#They are the exponentiated value of the logit coefficients.
-
-multi1.rrr = exp(coef(model))
-multi1.rrr
+write.csv(MyData, "clustered_EC.csv")
